@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { ApartmentsService } from './apartments/apartments.service';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -22,6 +23,17 @@ async function bootstrap() {
   );
 
   app.setGlobalPrefix('api');
+
+    const config = new DocumentBuilder()
+    .setTitle('Apartments API')
+    .setDescription('API for managing apartments')
+    .setVersion('1.0')
+    .addTag('apartments')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('docs', app, document);
+
 
   const port = process.env.PORT || 3000;
   await app.listen(port);
