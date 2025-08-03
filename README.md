@@ -87,18 +87,18 @@ Once the containers are running:
 ## 📸 Application Screenshots
 
 ### Apartments Listing Page
-![Apartments Listing](<img width="1454" height="941" alt="image" src="https://github.com/user-attachments/assets/9427b877-d700-4bec-af1a-1f9e21f53c9e" />
-)
+<img width="1460" height="968" alt="image" src="https://github.com/user-attachments/assets/192f783e-9852-426c-b943-a556da1a53f5" />
+
 *Browse and filter apartment listings with advanced search options*
 
 ### Add Apartment Page
-![Add Apartment](<img width="1460" height="968" alt="image" src="https://github.com/user-attachments/assets/617f1183-4dd1-4503-a4c0-905518ca6fd6" />
-)
+<img width="1460" height="968" alt="image" src="https://github.com/user-attachments/assets/a1300874-1bb1-4109-8714-0657e2ec0999" />
+
 *Create new apartment listings with comprehensive details*
 
 ### Apartment Filters
-![Apartment Filters](<img width="1454" height="941" alt="image" src="https://github.com/user-attachments/assets/5e96315c-a386-4318-8b2a-559f438eb2fe" />
-)
+<img width="1460" height="968" alt="image" src="https://github.com/user-attachments/assets/1c86d38b-5bc3-4c35-a294-8cb34eee171e" />
+
 *Advanced filtering options including price range, bedrooms, location, and more*
 
 ## 📊 Available Services
