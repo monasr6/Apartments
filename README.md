@@ -77,8 +77,29 @@ docker-compose down && docker-compose up -d --build
 Once the containers are running:
 
 - **Frontend**: http://localhost:3000
+- **Default Route**: http://localhost:3000/apartments (Apartments Listing Page)
+- **Add Apartment**: http://localhost:3000/add-apartment
 - **Backend API**: http://localhost:3001
 - **Database**: localhost:3306 (for external connections)
+
+> **Note**: The default landing page redirects to the apartments listing page for better user experience.
+
+## 📸 Application Screenshots
+
+### Apartments Listing Page
+![Apartments Listing](<img width="1454" height="941" alt="image" src="https://github.com/user-attachments/assets/9427b877-d700-4bec-af1a-1f9e21f53c9e" />
+)
+*Browse and filter apartment listings with advanced search options*
+
+### Add Apartment Page
+![Add Apartment](<img width="1460" height="968" alt="image" src="https://github.com/user-attachments/assets/617f1183-4dd1-4503-a4c0-905518ca6fd6" />
+)
+*Create new apartment listings with comprehensive details*
+
+### Apartment Filters
+![Apartment Filters](<img width="1454" height="941" alt="image" src="https://github.com/user-attachments/assets/5e96315c-a386-4318-8b2a-559f438eb2fe" />
+)
+*Advanced filtering options including price range, bedrooms, location, and more*
 
 ## 📊 Available Services
 
