@@ -39,12 +39,6 @@ export class FiltersAppliedDto {
 
   @ApiProperty({ description: 'Bathrooms filter', required: false })
   bathrooms?: number;
-
-  @ApiProperty({ description: 'Sort field', required: false })
-  sortBy?: string;
-
-  @ApiProperty({ description: 'Sort order', required: false })
-  sortOrder?: string;
 }
 
 export class PaginatedApartmentsDto {

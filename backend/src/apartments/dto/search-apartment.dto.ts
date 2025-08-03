@@ -119,23 +119,4 @@ export class SearchApartmentDto {
   @Transform(({ value }) => value === 'true' || value === true)
   petFriendly?: boolean;
 
-  @ApiPropertyOptional({
-    description: 'Sort by field',
-    enum: ['price', 'createdAt', 'area', 'bedrooms', 'viewCount', 'averageRating'],
-    default: 'createdAt',
-    example: 'price',
-  })
-  @IsOptional()
-  @IsEnum(['price', 'createdAt', 'area', 'bedrooms', 'viewCount', 'averageRating'])
-  sortBy?: string = 'createdAt';
-
-  @ApiPropertyOptional({
-    description: 'Sort order',
-    enum: ['ASC', 'DESC'],
-    default: 'DESC',
-    example: 'ASC',
-  })
-  @IsOptional()
-  @IsEnum(['ASC', 'DESC'])
-  sortOrder?: 'ASC' | 'DESC' = 'DESC';
 }

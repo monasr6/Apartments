@@ -96,20 +96,6 @@ export class ApartmentsController {
     description: 'Number of bathrooms', 
     example: 1 
   })
-  @ApiQuery({ 
-    name: 'sortBy', 
-    required: false, 
-    enum: ['price', 'createdAt', 'area', 'bedrooms'], 
-    description: 'Sort by field', 
-    example: 'price' 
-  })
-  @ApiQuery({ 
-    name: 'sortOrder', 
-    required: false, 
-    enum: ['ASC', 'DESC'], 
-    description: 'Sort order', 
-    example: 'ASC' 
-  })
   @ApiResponse({
     status: 200,
     description: 'Successfully retrieved apartments',
@@ -124,10 +110,31 @@ export class ApartmentsController {
     description: 'Internal server error',
   })
   async findAll(
-    @Query(ValidationPipe) searchDto: SearchApartmentDto,
-    @Query(ValidationPipe) paginationDto: PaginationDto,
+    @Query(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: false, transform: true })) query: any,
   ): Promise<PaginatedApartmentsDto> {
     try {
+      // Extract search parameters
+      const searchDto: SearchApartmentDto = {
+        search: query.search,
+        project: query.project,
+        location: query.location,
+        minPrice: query.minPrice ? parseFloat(query.minPrice) : undefined,
+        maxPrice: query.maxPrice ? parseFloat(query.maxPrice) : undefined,
+        bedrooms: query.bedrooms ? parseInt(query.bedrooms) : undefined,
+        bathrooms: query.bathrooms ? parseInt(query.bathrooms) : undefined,
+        minArea: query.minArea ? parseFloat(query.minArea) : undefined,
+        maxArea: query.maxArea ? parseFloat(query.maxArea) : undefined,
+        type: query.type,
+        furnishing: query.furnishing,
+        petFriendly: query.petFriendly === 'true' || query.petFriendly === true,
+      };
+
+      // Extract pagination parameters
+      const paginationDto: PaginationDto = {
+        page: query.page ? parseInt(query.page) : 1,
+        limit: query.limit ? parseInt(query.limit) : 10,
+      };
+
       const result = await this.apartmentsService.findAllPaginated(
         searchDto,
         paginationDto,
@@ -434,76 +441,4 @@ export class ApartmentsController {
     }
   }
 
-  /**
-   * Get apartments by project
-   */
-  @Get('project/:projectName')
-  @ApiOperation({
-    summary: 'Get apartments by project',
-    description: 'Retrieve all apartments belonging to a specific project.'
-  })
-  @ApiParam({
-    name: 'projectName',
-    type: 'string',
-    description: 'Project name',
-    example: 'Marina Heights',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'Successfully retrieved apartments for project',
-  })
-  async findByProject(@Param('projectName') projectName: string) {
-    try {
-      return await this.apartmentsService.findByProject(projectName);
-    } catch (error) {
-      throw new HttpException(
-        'Failed to fetch apartments for project',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
-  }
-
-  /**
-   * Get featured/recommended apartments
-   */
-  @Get('featured/recommendations')
-  @ApiOperation({
-    summary: 'Get featured apartments',
-    description: 'Retrieve a curated list of featured apartments based on popularity, ratings, and availability.'
-  })
-  @ApiQuery({
-    name: 'limit',
-    required: false,
-    type: Number,
-    description: 'Number of featured apartments to return',
-    example: 6,
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'Successfully retrieved featured apartments',
-  })
-  async getFeatured(@Query('limit', new ParseIntPipe({ optional: true })) limit = 6) {
-    try {
-      return await this.apartmentsService.getFeaturedApartments(limit);
-    } catch (error) {
-      throw new HttpException(
-        'Failed to fetch featured apartments',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
-  }
-
-  /**
-   * Health check endpoint for monitoring
-   */
-  @Get('health/status')
-  @ApiExcludeEndpoint() // Exclude from Swagger docs
-  async healthCheck() {
-    return {
-      status: 'healthy',
-      timestamp: new Date().toISOString(),
-      service: 'apartments-api',
-      version: '1.0.0',
-    };
-  }
 }

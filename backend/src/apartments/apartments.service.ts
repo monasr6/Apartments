@@ -27,9 +27,7 @@ export class ApartmentsService {
     private apartmentRepository: Repository<Apartment>,
   ) {}
 
-  /**
-   * Find all apartments with pagination, search, and filtering
-   */
+
   async findAllPaginated(
     searchDto: SearchApartmentDto,
     paginationDto: PaginationDto,
@@ -42,8 +40,6 @@ export class ApartmentsService {
       maxPrice, 
       bedrooms, 
       bathrooms, 
-      sortBy = 'createdAt',
-      sortOrder = 'DESC'
     } = searchDto;
 
     // Calculate skip for pagination
@@ -84,7 +80,6 @@ export class ApartmentsService {
 
     // Build order options
     const orderOptions: any = {};
-    orderOptions[sortBy] = sortOrder;
 
     // Execute query with pagination
     const [apartments, total] = await this.apartmentRepository.findAndCount({
@@ -92,7 +87,6 @@ export class ApartmentsService {
       order: orderOptions,
       skip,
       take: limit,
-      relations: ['reviews'], // If you add reviews later
     });
 
     // Calculate pagination metadata
@@ -119,15 +113,10 @@ export class ApartmentsService {
         maxPrice,
         bedrooms,
         bathrooms,
-        sortBy,
-        sortOrder,
       },
     };
   }
 
-  /**
-   * Find apartment by ID with additional details
-   */
   async findOneWithDetails(id: number): Promise<Apartment | null> {
     return this.apartmentRepository.findOne({
       where: { 
@@ -138,16 +127,10 @@ export class ApartmentsService {
     });
   }
 
-  /**
-   * Legacy method for backward compatibility
-   */
   async findOne(id: number): Promise<Apartment | null> {
     return this.findOneWithDetails(id);
   }
 
-  /**
-   * Create a new apartment with auto-generated slug
-   */
   async create(createApartmentDto: CreateApartmentDto): Promise<Apartment> {
     const apartment = this.apartmentRepository.create({
       ...createApartmentDto,
@@ -178,9 +161,7 @@ export class ApartmentsService {
     return updatedApartment;
   }
 
-  /**
-   * Soft delete an apartment
-   */
+
   async softDelete(id: number): Promise<boolean> {
     const apartment = await this.findOneWithDetails(id);
     if (!apartment) {
@@ -196,40 +177,6 @@ export class ApartmentsService {
     return true;
   }
 
-  /**
-   * Find apartments by project
-   */
-  async findByProject(projectName: string): Promise<Apartment[]> {
-    return this.apartmentRepository.find({
-      where: { 
-        project: Like(`%${projectName}%`),
-        isAvailable: true,
-        deletedAt: IsNull()
-      },
-      order: { createdAt: 'DESC' },
-    });
-  }
-
-  /**
-   * Get featured apartments based on view count and recency
-   */
-  async getFeaturedApartments(limit: number = 6): Promise<Apartment[]> {
-    return this.apartmentRepository.find({
-      where: { 
-        isAvailable: true,
-        deletedAt: IsNull()
-      },
-      order: { 
-        viewCount: 'DESC',
-        createdAt: 'DESC' 
-      },
-      take: limit,
-    });
-  }
-
-  /**
-   * Find similar apartments based on price range and bedrooms
-   */
   async findSimilar(apartmentId: number, limit: number = 3): Promise<Apartment[]> {
     const apartment = await this.findOneWithDetails(apartmentId);
     if (!apartment) return [];
@@ -249,9 +196,6 @@ export class ApartmentsService {
     });
   }
 
-  /**
-   * Increment view count for analytics
-   */
   async incrementViewCount(id: number): Promise<void> {
     await this.apartmentRepository.increment({ id }, 'viewCount', 1);
   }
