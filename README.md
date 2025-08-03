@@ -101,6 +101,10 @@ Once the containers are running:
 
 *Advanced filtering options including price range, bedrooms, location, and more*
 
+### Swager docs apis link : http://localhost:3001/docs/#/
+<img width="1528" height="774" alt="image" src="https://github.com/user-attachments/assets/efc58f5f-7d3e-4b12-ba5b-cda42ad80337" />
+
+
 ## 📊 Available Services
 
 The application consists of three main services:
